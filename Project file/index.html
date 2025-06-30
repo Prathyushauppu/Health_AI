@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HealthAI – Patient Assistant</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #0f172a;
+      color: white;
+      height: 100vh;
+    }
+
+    .profile {
+      width: 30%;
+      background-color: #1e293b;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    .profile h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .profile label {
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    .profile input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #0f172a;
+      color: white;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+
+    .age-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .age-control button {
+      padding: 5px 10px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .gender-options {
+      margin-top: 10px;
+    }
+
+    .gender-options label {
+      margin-right: 15px;
+    }
+
+    .main {
+      width: 70%;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    .main h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      background-color: #1e293b;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+      color: #60a5fa;
+    }
+
+    textarea, input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #0f172a;
+      color: white;
+      border: 1px solid #334155;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #2563eb;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .output {
+      margin-top: 10px;
+      background-color: #0f172a;
+      padding: 10px;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Patient Profile -->
+  <div class="profile">
+    <h2>👤 Patient Profile</h2>
+
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Enter name" />
+
+    <label>Age</label>
+    <div class="age-control">
+      <button onclick="changeAge(-1)">−</button>
+      <span id="age-display">25</span>
+      <button onclick="changeAge(1)">+</button>
+    </div>
+
+    <label>Gender</label>
+    <div class="gender-options">
+      <label><input type="radio" name="gender" value="Male" checked /> Male</label>
+      <label><input type="radio" name="gender" value="Female" /> Female</label>
+      <label><input type="radio" name="gender" value="Other" /> Other</label>
+    </div>
+  </div>
+
+  <!-- Main Sections -->
+  <div class="main">
+    <h1>HealthAI – Intelligent Healthcare Assistant</h1>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <h3>🕐 24/7 Patient Support</h3>
+      <input id="support-input" placeholder="Ask your health question..." />
+      <button onclick="askSupport()">Ask</button>
+      <div class="output" id="support-output"></div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <h3>🧬 Disease Prediction System</h3>
+      <textarea id="predict-input" placeholder="Describe your symptoms..."></textarea>
+      <button onclick="predict()">Predict</button>
+      <div class="output" id="predict-output"></div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <h3>💊 Treatment Plan</h3>
+      <input id="treatment-input" placeholder="Enter diagnosed condition..." />
+      <button onclick="treat()">Get Plan</button>
+      <div class="output" id="treatment-output"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+ <script>
+  let age = 25;
+
+  function changeAge(delta) {
+    age = Math.max(0, age + delta);
+    document.getElementById("age-display").innerText = age;
+  }
+
+  function getProfileInfo() {
+    const name = document.getElementById("name").value || "Patient";
+    const gender = document.querySelector('input[name="gender"]:checked').value;
+    return { name, age, gender };
+  }
+
+  function askSupport() {
+    const q = document.getElementById("support-input").value;
+    const { name, age, gender } = getProfileInfo();
+    const output = `👤 ${name} (${gender}, Age: ${age})\n\n💬 Question: "${q}"\n\n🩺 Advice:\n• Stay hydrated\n• Rest well\n• Seek medical help if needed.`;
+    document.getElementById("support-output").innerText = output;
+  }
+
+  function predict() {
+    const s = document.getElementById("predict-input").value;
+    const { name, age, gender } = getProfileInfo();
+    const output = `👤 ${name} (${gender}, Age: ${age})\n\n🧬 Symptoms: "${s}"\n\n🔍 Possible Conditions:\n• Common Cold\n• Viral Fever\n• Dehydration\n\n📌 Please consult a medical professional.`;
+    document.getElementById("predict-output").innerText = output;
+  }
+
+  function treat() {
+    const d = document.getElementById("treatment-input").value;
+    const { name, age, gender } = getProfileInfo();
+    const output = `👤 ${name} (${gender}, Age: ${age})\n\n💊 Treatment for "${d}":\n• Medicine: Paracetamol, ORS\n• Fluids, rest, light meals\n• Doctor consultation is advised.`;
+    document.getElementById("treatment-output").innerText = output;
+  }
+</script>
+
+
+</body>
+</html>
